@@ -13,7 +13,7 @@ db.defaults({ stocks: [] }).write();
 
 populateDB();
 
-function timeout(ms) {
+function timeout(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -23,16 +23,18 @@ async function sleep(fn, ...args) {
 }
 
 async function populateDB() {
-  console.log("Writing to db...");
+  console.log("Start populating db");
   for (let stock of universe.universe) {
     await sleep(() => {
-      console.log("write...");
       return alpha.data
         .daily(stock)
         .then(data => {
           db.get("stocks")
             .push({ [stock]: polishData(data) })
             .write();
+        })
+        .then(() => {
+          console.log("writing ", stock, "... done!");
         })
         .catch(err => console.log(err));
     });
@@ -48,6 +50,10 @@ function polishData(data) {
   }));
   return dataArray;
 }
+
+alpha.technical.adx("AAPL", "daily", 25).then(res => {
+  console.log("test adx ", alpha.util.polish(res));
+});
 
 // const stocksScreener = new StocksScreener();
 // stocksScreener.bearishEngulfing();
