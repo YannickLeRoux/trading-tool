@@ -7,7 +7,7 @@ const db = low(adapter);
 
 export interface IStockScreener {
   universe: string[];
-  dailyData: {}
+  dailyData: {stocks:[]}
 
 }
 
