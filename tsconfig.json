@@ -1,12 +1,32 @@
 {
-  "compileOnSave": true,
   "compilerOptions": {
-    "module": "commonjs",
-    "outDir": "./lib/",
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "declarationDir": "dist",
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": false,
+    "importHelpers": true,
+    "jsx": "react",
+    "lib": ["es2015", "dom"],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "rootDir": "src",
+    "outDir": "compiled",
     "removeComments": true,
-    "preserveConstEnums": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "pretty": true,
+    "strict": true,
+
+    "stripInternal": true,
+    "target": "es5",
+    "typeRoots": ["node_modules/@types"]
   },
-  "files": ["index.ts", "StocksScreener.ts"]
+  "include": ["src", "./typings.d.ts"],
+  "exclude": ["node_modules", "dist", "src/**/*.test.tsx"]
+}
 }
