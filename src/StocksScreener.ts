@@ -77,6 +77,24 @@ class StocksScreener implements IStockScreener {
     console.log('Stocks in a morning star pattern are ', ...res);
   }
 
+  hammer() {
+    const res = [];
+    for (let stock of this.dailyData.stocks) {
+      const dataArray: any = Object.values(stock)[0];
+      const day1: any = Object.values(dataArray[1])[0];
+      const day2: any = Object.values(dataArray[0])[0];
+      if (
+        day1.close < day1.open &&
+        day2.close < day2.open &&
+        day2.open - day2.close < 4 * (day2.close - day2.low) &&
+        day2.high - day2.open < day2.open - day2.close
+      ) {
+        res.push(Object.keys(stock)[0]);
+      }
+    }
+    console.log('Stocks in a bearish engulfing pattern are ', ...res);
+  }
+
   // create a signal with moving average nine days getting positive
   // or maybe when 4 days cross above 9 days
 

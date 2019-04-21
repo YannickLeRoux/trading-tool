@@ -24,20 +24,25 @@ async function sleep(fn: any, ...args: any): Promise<any> {
 
 async function populateDB() {
   console.log('Start populating db');
+  const dbString: string = JSON.stringify(db.getState());
+
   for (let stock of universe.universe) {
-    await sleep(() => {
-      return alpha.data
-        .daily(stock)
-        .then((data: any) => {
-          db.get('stocks')
-            .push({ [stock]: polishData(data) })
-            .write();
-        })
-        .then(() => {
-          console.log('writing ', stock, '... done!');
-        })
-        .catch((err: any) => console.log(err));
-    });
+    debugger;
+    if (!dbString.includes(stock)) {
+      await sleep(() => {
+        return alpha.data
+          .daily(stock)
+          .then((data: any) => {
+            db.get('stocks')
+              .push({ [stock]: polishData(data) })
+              .write();
+          })
+          .then(() => {
+            console.log('writing ', stock, '... done!');
+          })
+          .catch((err: any) => console.log(err));
+      });
+    }
   }
 
   console.log('Done!');
@@ -59,3 +64,4 @@ function polishData(data: any) {
 // stocksScreener.bearishEngulfing();
 // stocksScreener.bullishEngulfing();
 // stocksScreener.morningStar();
+// stocksScreener.hammer();
