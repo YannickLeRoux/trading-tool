@@ -16,7 +16,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "rootDir": "src",
-    "outDir": "compiled",
+    "outDir": "lib",
     "removeComments": true,
     "sourceMap": true,
     "pretty": true,
@@ -28,5 +28,4 @@
   },
   "include": ["src", "./typings.d.ts"],
   "exclude": ["node_modules", "dist", "src/**/*.test.tsx"]
-}
 }
