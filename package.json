@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/lowdb": "^1.0.7",
+    "@types/lowdb": "^1.0.9",
     "@types/node": "^11.12.2",
     "alphavantage": "^1.2.0",
     "dot-env": "0.0.1",

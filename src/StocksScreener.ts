@@ -1,4 +1,4 @@
-const universe = require('./utils/universe');
+const universe: string[] = require('./utils/universe');
 const alpha = require('alphavantage')({ key: process.env.apiKey });
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
@@ -20,28 +20,36 @@ class StocksScreener implements IStockScreener {
   dailyData: { stocks: [] };
 
   constructor() {
-    this.universe = universe.universe;
+    this.universe = universe;
     this.dailyData = db.getState();
   }
+  pourcent = (number1: number, number2: number): number => {
+    return Math.round((number1 / number2) * 100);
+  };
 
-  isBullish() {
+  private isBullish() {
     // adx et dmi+
   }
 
-  bullishEngulfing() {
+  public bullishEngulfing(): void {
     const res: string[] = [];
     for (let stock of this.dailyData.stocks) {
       const dataArray: any = Object.values(stock)[0];
       const day1: any = Object.values(dataArray[1])[0];
       const day2: any = Object.values(dataArray[0])[0];
+      if (Object.keys(stock)[0] == 'DTE') {
+        console.log('ok');
+        console.log(Object.values(stock)[0]);
+      }
       if (day1.close < day1.open && day2.close > day2.open && day2.open < day1.close && day2.close > day1.open) {
+        console.log(day2.open, day2.close);
         res.push(Object.keys(stock)[0]);
       }
     }
     console.log('Stocks in a bullish engulfing pattern are ', ...res);
   }
 
-  bearishEngulfing() {
+  public bearishEngulfing(): void {
     const res = [];
     for (let stock of this.dailyData.stocks) {
       const dataArray: any = Object.values(stock)[0];
@@ -54,7 +62,7 @@ class StocksScreener implements IStockScreener {
     console.log('Stocks in a bearish engulfing pattern are ', ...res);
   }
 
-  morningStar() {
+  public morningStar(): void {
     debugger;
     // end of down trend
     const res = [];
@@ -77,28 +85,28 @@ class StocksScreener implements IStockScreener {
     console.log('Stocks in a morning star pattern are ', ...res);
   }
 
-  hammer() {
+  public hammer() {
     const res = [];
     for (let stock of this.dailyData.stocks) {
       const dataArray: any = Object.values(stock)[0];
       const day1: any = Object.values(dataArray[1])[0];
       const day2: any = Object.values(dataArray[0])[0];
       if (
-        day1.close < day1.open &&
+        day1.close < day1.open - day1.open * 0.01 &&
         day2.close < day2.open &&
-        day2.open - day2.close < 4 * (day2.close - day2.low) &&
+        Math.abs(day2.open - day2.close) < Math.abs((day2.close - day2.low) * 0.5) &&
         day2.high - day2.open < day2.open - day2.close
       ) {
         res.push(Object.keys(stock)[0]);
       }
     }
-    console.log('Stocks in a bearish engulfing pattern are ', ...res);
+    console.log('Stocks showing a hammer are ', ...res);
   }
 
   // create a signal with moving average nine days getting positive
   // or maybe when 4 days cross above 9 days
 
-  polishData(data: any) {
+  public polishData(data: any) {
     const polished = alpha.util.polish(data);
     const dataArray = Object.keys(polished.data).map(key => ({
       [key]: polished.data[key]

@@ -1,6 +1,6 @@
-const fav: string[] = ["AAPL", "TRK", "BABA", "CRON", "BSV"];
+const fav = ["AAPL", "TRK", "BABA", "CRON", "BSV"];
 
-const SP500: string[] = [
+const SP500  = [
   "AAPL",
   "ABT",
   "ABBV",
@@ -499,5 +499,9 @@ const SP500: string[] = [
   "ZTS"
 ];
 
-const indexes: string[] = ["VGT", "VTI", "VOO"];
-exports.universe = [...SP500];
+const indexes = ["VGT", "VTI", "VOO"];
+
+const universe = [...SP500];
+
+export default universe;
+

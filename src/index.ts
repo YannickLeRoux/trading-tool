@@ -1,9 +1,11 @@
+import { AdapterSync } from 'lowdb';
+
 // https://www.alphavantage.co/documentation/
 // https://github.com/zackurben/alphavantage
-const universe = require('./utils/universe');
+const universe: string[] = require('./utils/universe');
 const alpha = require('alphavantage')({ key: process.env.apiKey });
 const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
+const FileSync: AdapterSync = require('lowdb/adapters/FileSync');
 const StocksScreener = require('./StocksScreener');
 
 const adapter = new FileSync('db.json');
@@ -24,9 +26,9 @@ async function sleep(fn: any, ...args: any): Promise<any> {
 
 async function populateDB() {
   console.log('Start populating db');
-  const dbString: string = JSON.stringify(db.getState());
+  const dbString = JSON.stringify(db.getState());
 
-  for (let stock of universe.universe) {
+  for (let stock of universe) {
     debugger;
     if (!dbString.includes(stock)) {
       await sleep(() => {
@@ -56,8 +58,15 @@ function polishData(data: any) {
   return dataArray;
 }
 
-// alpha.technical.adx('AAPL', 'daily', 25).then((res: any) => {
-//   console.log('test adx ', alpha.util.polish(res));
+// alpha.technical.sma('AAPL', 'daily', 9, 'close').then((res: any) => {
+//   const a = Object.values(alpha.util.polish(res))[0];
+//   const b = Object.values(a);
+//   const c = Object.values(b);
+//   console.log('test sma 9', c);
+// });
+
+// alpha.technical.sma('AAPL', 'daily', 4, 'close').then((res: any) => {
+//   console.log('test sma 4', alpha.util.polish(res));
 // });
 
 // const stocksScreener = new StocksScreener();
